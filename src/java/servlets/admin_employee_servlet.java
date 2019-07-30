@@ -5,7 +5,11 @@
  */
 package servlets;
 
+import controllers.EmployeeController;
+import controllers.RoleController;
 import daos.GenericDAO;
+import icontrollers.IEmployeeController;
+import icontrollers.IRoleController;
 import idaos.IGenericDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,7 +30,8 @@ import tools.HibernateUtil;
 @WebServlet(name = "admin_employee_servlet", urlPatterns = {"/EmployeeServlet"})
 public class admin_employee_servlet extends HttpServlet {
 
-    IGenericDAO<Employee> employeeDAO = new GenericDAO(Employee.class, HibernateUtil.getSessionFactory());
+    IEmployeeController iec = new EmployeeController();
+    IRoleController irc = new RoleController();
 
 
     /**
@@ -42,8 +47,8 @@ public class admin_employee_servlet extends HttpServlet {
         throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            request.getSession().setAttribute("listEmployee", employeeDAO.getAll());
-            
+            request.getSession().setAttribute("listEmployee", iec.getAll());
+            request.getSession().setAttribute("listRole", irc.getAll());
             response.sendRedirect("admin_employee.jsp");
         }
     }
@@ -63,9 +68,9 @@ public class admin_employee_servlet extends HttpServlet {
         String id = request.getParameter("id")+"";
         String action = request.getParameter("action")+"";
         if(action.equals("delete")){
-            employeeDAO.delete(new Employee(new BigDecimal(id)));
+            iec.delete(id);
         }else if(action.equals("update")){
-            request.getSession().setAttribute("employee", employeeDAO.getById(new BigDecimal(id)));
+            request.getSession().setAttribute("employee", iec.getById(id));
         }
         processRequest(request, response);
     }
@@ -88,10 +93,7 @@ public class admin_employee_servlet extends HttpServlet {
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        BigDecimal bdId = new BigDecimal(id);
-        Role newRole = new Role(role);
-        Employee employee = new Employee(bdId, name, newRole, phone, email, password);
-        employeeDAO.insertUpdate(employee);
+        iec.insertUpdate(id, name, role, phone, email, password);
         processRequest(request, response);
     }
 

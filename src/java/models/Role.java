@@ -51,13 +51,13 @@ public class Role implements Serializable {
         this.id = id;
     }
 
-    public Role(String role) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Role(String name) {
+        this.name = name;
     }
 
     public Role(BigDecimal id, String name) {
-        this.id=id;
-        this.name=name;
+        this.id = id;
+        this.name = name;
     }
 
     public Role(Role role) {
@@ -113,5 +113,5 @@ public class Role implements Serializable {
     public String toString() {
         return "models.Role[ id=" + id + " ]";
     }
-    
+
 }

@@ -5,7 +5,9 @@
  */
 package servlets;
 
+import controllers.RoleController;
 import daos.GenericDAO;
+import icontrollers.IRoleController;
 import idaos.IGenericDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,7 +28,8 @@ import tools.HibernateUtil;
 @WebServlet(name = "admin_role_servlet", urlPatterns = {"/RoleServlet"})
 public class admin_role_servlet extends HttpServlet {
 
-        IGenericDAO<Role> roleDAO = new GenericDAO(Role.class, HibernateUtil.getSessionFactory());
+        //IGenericDAO<Role> roleDAO = new GenericDAO(Role.class, HibernateUtil.getSessionFactory());
+        IRoleController irc = new RoleController();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,7 +44,7 @@ public class admin_role_servlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            request.getSession().setAttribute("listRole", roleDAO.getAll());
+            request.getSession().setAttribute("listRole", irc.getAll());
             
             response.sendRedirect("admin_role.jsp");
         }
@@ -62,9 +65,9 @@ public class admin_role_servlet extends HttpServlet {
         String id = request.getParameter("id")+"";
         String action = request.getParameter("action")+"";
         if(action.equals("delete")){
-            roleDAO.delete(new Role(new BigDecimal(id)));
+            irc.delete(id);
         }else if(action.equals("update")){
-            request.getSession().setAttribute("role", roleDAO.getById(new BigDecimal(id)));
+            request.getSession().setAttribute("role", irc.getById(id));
         }
         processRequest(request, response);
     }
@@ -82,9 +85,7 @@ public class admin_role_servlet extends HttpServlet {
             throws ServletException, IOException {
         String id = request.getParameter("id");
         String name = request.getParameter("name");
-        BigDecimal bdId = new BigDecimal(id);
-        Role role = new Role(bdId, name);
-        roleDAO.insertUpdate(role);
+        irc.insertUpdate(id, name);
         processRequest(request, response);
     }
 

@@ -5,11 +5,12 @@
  */
 package servlets;
 
+import controllers.CustomerController;
 import daos.GenericDAO;
+import icontrollers.ICustomerController;
 import idaos.IGenericDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,6 +27,7 @@ import tools.HibernateUtil;
 public class admin_customer_servlet extends HttpServlet {
 
     IGenericDAO<Customer> customerDAO = new GenericDAO(Customer.class, HibernateUtil.getSessionFactory());
+    ICustomerController icc =  new CustomerController();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,8 +43,7 @@ public class admin_customer_servlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            request.getSession().setAttribute("listCustomer", customerDAO.getAll());
-            
+            request.getSession().setAttribute("listCustomer", icc.getAll());
             response.sendRedirect("admin_customer.jsp");
         }
     }
@@ -62,11 +63,10 @@ public class admin_customer_servlet extends HttpServlet {
         String id = request.getParameter("id")+"";
         String action = request.getParameter("action")+"";
         if(action.equals("delete")){
-            customerDAO.delete(new Customer(new BigDecimal(id)));
+            icc.delete(id);
         }else if(action.equals("update")){
-            request.getSession().setAttribute("customer", customerDAO.getById(new BigDecimal(id)));
+            request.getSession().setAttribute("customer", icc.getById(id));
         }
-        
         processRequest(request, response);
     }
 
@@ -87,10 +87,7 @@ public class admin_customer_servlet extends HttpServlet {
         String address = request.getParameter("address");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
-        BigDecimal bdId = new BigDecimal(id);
-        Customer customer = new Customer(bdId, name, pic, address, phone, email);
-        customerDAO.insertUpdate(customer);
-        
+        icc.insertUpdate(id, name, pic, address, phone, email);
         processRequest(request, response);
     }
 

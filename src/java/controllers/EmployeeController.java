@@ -46,8 +46,7 @@ public class EmployeeController implements IEmployeeController{
     @Override
     public String insertUpdate(String id, String name, String role, String phone, String email, String password) {
         String result = "";
-        Role newRole = new Role(role);
-        Employee employee = new Employee (new BigDecimal(id), name, newRole, phone, email, password);
+        Employee employee = new Employee (new BigDecimal(id), name, new Role(new BigDecimal(role)), phone, email, password);
         if(iGenericDAO.insertUpdate(employee)){
             result = "Data berhasil disimpan";
         }else{

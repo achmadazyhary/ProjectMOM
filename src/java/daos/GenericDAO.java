@@ -128,8 +128,6 @@ public class GenericDAO<T> implements IGenericDAO<T>{
     }
 
 
-
-
     public boolean insertUpdate(T model) {
         boolean result = false;
         try {

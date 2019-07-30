@@ -5,19 +5,15 @@
  */
 package servlets;
 
-import daos.GenericDAO;
-import idaos.IGenericDAO;
+import controllers.StatusController;
+import icontrollers.IStatusController;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Role;
-import models.Status;
-import tools.HibernateUtil;
 
 /**
  *
@@ -26,7 +22,7 @@ import tools.HibernateUtil;
 @WebServlet(name = "admin_status_servlet", urlPatterns = {"/StatusServlet"})
 public class admin_status_servlet extends HttpServlet {
 
-    IGenericDAO<Status> statusDAO = new GenericDAO(Status.class, HibernateUtil.getSessionFactory());
+    IStatusController isc = new StatusController();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,7 +37,7 @@ public class admin_status_servlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            request.getSession().setAttribute("listStatus", statusDAO.getAll());
+            request.getSession().setAttribute("listStatus", isc.getAll());
     
             response.sendRedirect("admin_status.jsp");
         }
@@ -62,9 +58,9 @@ public class admin_status_servlet extends HttpServlet {
         String id = request.getParameter("id")+"";
         String action = request.getParameter("action")+"";
         if(action.equals("delete")){
-            statusDAO.delete(new Status(new BigDecimal(id)));
+            isc.delete(id);
         }else if(action.equals("update")){
-            request.getSession().setAttribute("status", statusDAO.getById(new BigDecimal(id)));
+            request.getSession().setAttribute("status", isc.getById(id));
         }
         processRequest(request, response);
     }
@@ -82,9 +78,7 @@ public class admin_status_servlet extends HttpServlet {
             throws ServletException, IOException {
         String id = request.getParameter("id");
         String name = request.getParameter("name");
-        BigDecimal bdId = new BigDecimal(id);
-        Status status = new Status(bdId, name);
-        statusDAO.insertUpdate(status);
+        isc.insertUpdate(id, name);
         processRequest(request, response);
     }
 
