@@ -13,6 +13,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -22,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Bella
+ * @author HARRY-PC
  */
 @Entity
 @Table(name = "CUSTOMER")
@@ -56,6 +58,20 @@ public class Customer implements Serializable {
     private String email;
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<Meeting> meetingList;
+    @JoinColumn(name = "DISTRICT", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private District district;
+    @JoinColumn(name = "PROVINCE", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Province province;
+    @JoinColumn(name = "SUBDISTRICT", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Subdistrict subdistrict;
+    @JoinColumn(name = "URBANVILLAGE", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Urbanvillage urbanvillage;
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    private List<Customermeeting> customermeetingList;
 
     public Customer() {
     }
@@ -63,23 +79,30 @@ public class Customer implements Serializable {
     public Customer(BigDecimal id) {
         this.id = id;
     }
+    
+    public Customer(String name, String pic, String address, String phone, String email, District district, Province province, Subdistrict subdistrict, Urbanvillage urbanvillage) {
+        this.name = name;
+        this.pic = pic;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.district = district;
+        this.province = province;
+        this.subdistrict = subdistrict;
+        this.urbanvillage = urbanvillage;
+    }
 
-    public Customer(BigDecimal id, String name) {
+    public Customer(BigDecimal id, String name, String pic, String address, String phone, String email, District district, Province province, Subdistrict subdistrict, Urbanvillage urbanvillage) {
         this.id = id;
         this.name = name;
-    }
-
-    public Customer(BigDecimal id, String name, String pic, String address, String phone, String email) {
-        this.id=id;
-        this.name=name;
-        this.pic=pic;
-        this.address=address;
-        this.phone=phone;
-        this.email=email;
-    }
-
-    public Customer(String customer) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.pic = pic;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.district = district;
+        this.province = province;
+        this.subdistrict = subdistrict;
+        this.urbanvillage = urbanvillage;
     }
 
     public BigDecimal getId() {
@@ -137,6 +160,47 @@ public class Customer implements Serializable {
 
     public void setMeetingList(List<Meeting> meetingList) {
         this.meetingList = meetingList;
+    }
+
+    public District getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(District district) {
+        this.district = district;
+    }
+
+    public Province getProvince() {
+        return province;
+    }
+
+    public void setProvince(Province province) {
+        this.province = province;
+    }
+
+    public Subdistrict getSubdistrict() {
+        return subdistrict;
+    }
+
+    public void setSubdistrict(Subdistrict subdistrict) {
+        this.subdistrict = subdistrict;
+    }
+
+    public Urbanvillage getUrbanvillage() {
+        return urbanvillage;
+    }
+
+    public void setUrbanvillage(Urbanvillage urbanvillage) {
+        this.urbanvillage = urbanvillage;
+    }
+
+    @XmlTransient
+    public List<Customermeeting> getCustomermeetingList() {
+        return customermeetingList;
+    }
+
+    public void setCustomermeetingList(List<Customermeeting> customermeetingList) {
+        this.customermeetingList = customermeetingList;
     }
 
     @Override

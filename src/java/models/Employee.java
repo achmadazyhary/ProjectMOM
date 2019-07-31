@@ -12,20 +12,22 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Bella
+ * @author HARRY-PC
  */
 @Entity
 @Table(name = "EMPLOYEE")
@@ -34,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Employee.findAll", query = "SELECT e FROM Employee e")
     , @NamedQuery(name = "Employee.findById", query = "SELECT e FROM Employee e WHERE e.id = :id")
     , @NamedQuery(name = "Employee.findByName", query = "SELECT e FROM Employee e WHERE e.name = :name")
+    , @NamedQuery(name = "Employee.findByLastname", query = "SELECT e FROM Employee e WHERE e.lastname = :lastname")
     , @NamedQuery(name = "Employee.findByPhone", query = "SELECT e FROM Employee e WHERE e.phone = :phone")
     , @NamedQuery(name = "Employee.findByEmail", query = "SELECT e FROM Employee e WHERE e.email = :email")
     , @NamedQuery(name = "Employee.findByPassword", query = "SELECT e FROM Employee e WHERE e.password = :password")})
@@ -42,25 +45,31 @@ public class Employee implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BI_EMPLOYEE")
+    @SequenceGenerator(name = "BI_EMPLOYEE", sequenceName = "STATUS_EMPLOYEE", allocationSize = 1)
     @Basic(optional = false)
     @Column(name = "ID")
     private BigDecimal id;
+    @Basic(optional = false)
     @Column(name = "NAME")
     private String name;
+    @Column(name = "LASTNAME")
+    private String lastname;
     @Column(name = "PHONE")
     private String phone;
     @Column(name = "EMAIL")
     private String email;
     @Column(name = "PASSWORD")
     private String password;
-    @JoinTable(name = "DETAILMEETING", joinColumns = {
-        @JoinColumn(name = "EMPLOYEE", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "MEETING", referencedColumnName = "ID")})
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Meeting> meetingList;
     @JoinColumn(name = "ROLE", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Role role;
+    @OneToMany(mappedBy = "pic", fetch = FetchType.LAZY)
+    private List<Meeting> meetingList;
+    @OneToMany(mappedBy = "manager", fetch = FetchType.LAZY)
+    private List<Meeting> meetingList1;
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
+    private List<Employeemeeting> employeemeetingList;
 
     public Employee() {
     }
@@ -69,18 +78,28 @@ public class Employee implements Serializable {
         this.id = id;
     }
 
+    public Employee(BigDecimal id, String name, String lastname, String phone, String email, String password, Role role) {
+        this.id = id;
+        this.name = name;
+        this.lastname = lastname;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    public Employee(String name, String lastname, String phone, String email, String password, Role role) {
+        this.name = name;
+        this.lastname = lastname;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
     public Employee(BigDecimal id, String name) {
         this.id = id;
         this.name = name;
-    }
-
-    public Employee(BigDecimal id, String name, Role role, String phone, String email, String password) {
-        this.id=id;
-        this.name=name;
-        this.role=role;
-        this.phone=phone;
-        this.email=email;
-        this.password=password;
     }
 
     public BigDecimal getId() {
@@ -97,6 +116,14 @@ public class Employee implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getPhone() {
@@ -123,6 +150,14 @@ public class Employee implements Serializable {
         this.password = password;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     @XmlTransient
     public List<Meeting> getMeetingList() {
         return meetingList;
@@ -132,12 +167,22 @@ public class Employee implements Serializable {
         this.meetingList = meetingList;
     }
 
-    public Role getRole() {
-        return role;
+    @XmlTransient
+    public List<Meeting> getMeetingList1() {
+        return meetingList1;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setMeetingList1(List<Meeting> meetingList1) {
+        this.meetingList1 = meetingList1;
+    }
+
+    @XmlTransient
+    public List<Employeemeeting> getEmployeemeetingList() {
+        return employeemeetingList;
+    }
+
+    public void setEmployeemeetingList(List<Employeemeeting> employeemeetingList) {
+        this.employeemeetingList = employeemeetingList;
     }
 
     @Override

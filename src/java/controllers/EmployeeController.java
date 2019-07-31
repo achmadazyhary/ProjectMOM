@@ -44,10 +44,22 @@ public class EmployeeController implements IEmployeeController{
     }
 
     @Override
-    public String insertUpdate(String id, String name, String role, String phone, String email, String password) {
+    public String insert(String name, String lastname, String role, String phone, String email, String password) {
         String result = "";
-        Employee employee = new Employee (new BigDecimal(id), name, new Role(new BigDecimal(role)), phone, email, password);
-        if(iGenericDAO.insertUpdate(employee)){
+        Employee employee = new Employee(name, lastname, phone, email, password, new Role(new  BigDecimal(role)));
+        if(iGenericDAO.insert(employee)){
+            result = "Data berhasil disimpan";
+        }else{
+            result = "Maaf Data gagal disimpan";
+        }
+        return result;
+    }
+    
+    @Override
+    public String update(String id, String name, String lastname, String role, String phone, String email, String password) {
+        String result = "";
+        Employee employee = new Employee(new BigDecimal(id), name, lastname, phone, email, password, new Role(new  BigDecimal(role)));
+        if(iGenericDAO.update(employee)){
             result = "Data berhasil disimpan";
         }else{
             result = "Maaf Data gagal disimpan";

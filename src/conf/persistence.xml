@@ -10,6 +10,12 @@
     <class>models.Status</class>
     <class>models.Role</class>
     <class>models.Mom</class>
+    <class>models.Employeemeeting</class>
+    <class>models.District</class>
+    <class>models.Customermeeting</class>
+    <class>models.Urbanvillage</class>
+    <class>models.Subdistrict</class>
+    <class>models.Province</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@localhost:1521:XE"/>

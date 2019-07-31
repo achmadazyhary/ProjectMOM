@@ -38,7 +38,6 @@ public class admin_status_servlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             request.getSession().setAttribute("listStatus", isc.getAll());
-    
             response.sendRedirect("admin_status.jsp");
         }
     }
@@ -78,7 +77,7 @@ public class admin_status_servlet extends HttpServlet {
             throws ServletException, IOException {
         String id = request.getParameter("id");
         String name = request.getParameter("name");
-        isc.insertUpdate(id, name);
+        isc.update(id, name);
         processRequest(request, response);
     }
 

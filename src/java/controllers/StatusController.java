@@ -43,15 +43,25 @@ public class StatusController implements IStatusController{
     }
 
     @Override
-    public String insertUpdate(String id, String name) {
+    public String insert(String name) {
         String result = "";
-        Status status = new Status(new BigDecimal(id), name);
-        if(iGenericDAO.insertUpdate(status)){
+        if(iGenericDAO.insert(new Status(name))){
             result = "Data berhasil disimpan";
         }else{
             result = "Maaf Data gagal disimpan";
         }
         return result;  
+    }
+
+    @Override
+    public String update(String id, String name) {
+        String result = "";
+        if(iGenericDAO.update(new Status(new BigDecimal(id), name))){
+            result = "Data berhasil disimpan";
+        }else{
+            result = "Maaf Data gagal disimpan";
+        }
+        return result; 
     }
 
     @Override

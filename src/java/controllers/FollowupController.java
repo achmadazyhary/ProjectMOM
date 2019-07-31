@@ -52,7 +52,7 @@ public class FollowupController implements IFollowupController{
     @Override
     public String insertUpdate(String id, String name, String pic, String targetdate, String notes, String mom) {
         String result = "";
-        Mom newMom = new Mom(mom);
+        Mom newMom = new Mom(new BigDecimal(mom));
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date newDate = null;
         try {

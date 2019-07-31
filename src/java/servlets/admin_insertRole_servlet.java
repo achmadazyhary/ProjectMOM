@@ -5,10 +5,8 @@
  */
 package servlets;
 
-import controllers.CustomerController;
-import daos.GenericDAO;
-import icontrollers.ICustomerController;
-import idaos.IGenericDAO;
+import controllers.RoleController;
+import icontrollers.IRoleController;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -16,19 +14,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Customer;
-import tools.HibernateUtil;
 
 /**
  *
- * @author Bella
+ * @author HARRY-PC
  */
-@WebServlet(name = "admin_customer_servlet", urlPatterns = {"/CustomerServlet"})
-public class admin_customer_servlet extends HttpServlet {
+@WebServlet(name = "admin_insertRole_servlet", urlPatterns = {"/insertRoleServlet"})
+public class admin_insertRole_servlet extends HttpServlet {
 
-    IGenericDAO<Customer> customerDAO = new GenericDAO(Customer.class, HibernateUtil.getSessionFactory());
-    ICustomerController icc =  new CustomerController();
-
+    IRoleController irc = new RoleController();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,9 +36,7 @@ public class admin_customer_servlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            request.getSession().setAttribute("listCustomer", icc.getAll());
-            response.sendRedirect("admin_customer.jsp");
+            response.sendRedirect("admin_role.jsp");
         }
     }
 
@@ -60,13 +52,6 @@ public class admin_customer_servlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id = request.getParameter("id")+"";
-        String action = request.getParameter("action")+"";
-        if(action.equals("delete")){
-            icc.delete(id);
-        }else if(action.equals("update")){
-            request.getSession().setAttribute("customer", icc.getById(id));
-        }
         processRequest(request, response);
     }
 
@@ -81,13 +66,8 @@ public class admin_customer_servlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id = request.getParameter("id");
         String name = request.getParameter("name");
-        String pic = request.getParameter("pic");
-        String address = request.getParameter("address");
-        String phone = request.getParameter("phone");
-        String email = request.getParameter("email");
-        icc.Update(id, name, pic, address, phone, pic, address, email, phone, email);
+        irc.insert(name);
         processRequest(request, response);
     }
 

@@ -42,8 +42,8 @@ public class MomController implements IMomController{
     @Override
     public String insertUpdate(String id, String meetingdesc, String meeting, String status) {
         String result = "";
-        Meeting newMeeting = new Meeting(meeting);
-        Status newStatus = new Status(status);
+        Meeting newMeeting = new Meeting(new BigDecimal(meeting));
+        Status newStatus = new Status(new BigDecimal(status));
         Mom mom = new Mom(new BigDecimal(id), meetingdesc, newMeeting, newStatus);
         if(iGenericDAO.insertUpdate(mom)){
             result = "Data berhasil disimpan";

@@ -43,10 +43,10 @@ public class RoleController implements IRoleController{
     }
 
     @Override
-    public String insertUpdate(String id, String name) {
+    public String insert(String name) {
         String result = "";
-        Role role = new Role(new BigDecimal(id), name);
-        if(iGenericDAO.insertUpdate(role)){
+        Role role = new Role(name);
+        if(iGenericDAO.insert(role)){
             result = "Data berhasil disimpan";
         }else{
             result = "Maaf Data gagal disimpan";
@@ -54,6 +54,18 @@ public class RoleController implements IRoleController{
         return result;    
     }
 
+    @Override
+    public String Update(String id, String name) {
+        String result = "";
+        Role role = new Role(new BigDecimal(id), name);
+        if(iGenericDAO.update(role)){
+            result = "Data berhasil disimpan";
+        }else{
+            result = "Maaf Data gagal disimpan";
+        }
+        return result;   
+    }
+    
     @Override
     public String delete(String id) {
         String result = "";
@@ -65,5 +77,5 @@ public class RoleController implements IRoleController{
         }
         return result;  
     }
-    
+
 }

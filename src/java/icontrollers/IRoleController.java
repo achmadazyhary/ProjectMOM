@@ -14,8 +14,9 @@ import models.Role;
  */
 public interface IRoleController {
     public List<Role> getAll();
-    public Role getById(String id);
     public List<Role> getByName(String name);
-    public String insertUpdate (String id, String name);
+    public Role getById(String id);
+    public String insert(String name);
+    public String Update(String id, String name);
     public String delete(String id);
 }

@@ -15,7 +15,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -28,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Bella
+ * @author HARRY-PC
  */
 @Entity
 @Table(name = "MEETING")
@@ -40,7 +39,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Meeting.findByProject", query = "SELECT m FROM Meeting m WHERE m.project = :project")
     , @NamedQuery(name = "Meeting.findByDates", query = "SELECT m FROM Meeting m WHERE m.dates = :dates")
     , @NamedQuery(name = "Meeting.findByTime", query = "SELECT m FROM Meeting m WHERE m.time = :time")
-    , @NamedQuery(name = "Meeting.findByChairedby", query = "SELECT m FROM Meeting m WHERE m.chairedby = :chairedby")
     , @NamedQuery(name = "Meeting.findByType", query = "SELECT m FROM Meeting m WHERE m.type = :type")})
 public class Meeting implements Serializable {
 
@@ -60,17 +58,23 @@ public class Meeting implements Serializable {
     private Date dates;
     @Column(name = "TIME")
     private String time;
-    @Column(name = "CHAIREDBY")
-    private String chairedby;
     @Column(name = "TYPE")
     private String type;
-    @ManyToMany(mappedBy = "meetingList", fetch = FetchType.LAZY)
-    private List<Employee> employeeList;
     @JoinColumn(name = "CUSTOMER", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Customer customer;
+    @JoinColumn(name = "PIC", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Employee pic;
+    @JoinColumn(name = "MANAGER", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Employee manager;
     @OneToMany(mappedBy = "meeting", fetch = FetchType.LAZY)
     private List<Mom> momList;
+    @OneToMany(mappedBy = "meeting", fetch = FetchType.LAZY)
+    private List<Employeemeeting> employeemeetingList;
+    @OneToMany(mappedBy = "meeting", fetch = FetchType.LAZY)
+    private List<Customermeeting> customermeetingList;
 
     public Meeting() {
     }
@@ -82,21 +86,6 @@ public class Meeting implements Serializable {
     public Meeting(BigDecimal id, String name) {
         this.id = id;
         this.name = name;
-    }
-
-    public Meeting(BigDecimal id, String name, String project, Date dates, String time, String chairedby, String type, Customer customer) {
-        this.id=id;
-        this.name=name;
-        this.project=project;
-        this.dates=dates;
-        this.time=time;
-        this.chairedby=chairedby;
-        this.type=type;
-        this.customer=customer;
-    }
-
-    public Meeting(String meeting) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public BigDecimal getId() {
@@ -139,29 +128,12 @@ public class Meeting implements Serializable {
         this.time = time;
     }
 
-    public String getChairedby() {
-        return chairedby;
-    }
-
-    public void setChairedby(String chairedby) {
-        this.chairedby = chairedby;
-    }
-
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    @XmlTransient
-    public List<Employee> getEmployeeList() {
-        return employeeList;
-    }
-
-    public void setEmployeeList(List<Employee> employeeList) {
-        this.employeeList = employeeList;
     }
 
     public Customer getCustomer() {
@@ -172,6 +144,22 @@ public class Meeting implements Serializable {
         this.customer = customer;
     }
 
+    public Employee getPic() {
+        return pic;
+    }
+
+    public void setPic(Employee pic) {
+        this.pic = pic;
+    }
+
+    public Employee getManager() {
+        return manager;
+    }
+
+    public void setManager(Employee manager) {
+        this.manager = manager;
+    }
+
     @XmlTransient
     public List<Mom> getMomList() {
         return momList;
@@ -179,6 +167,24 @@ public class Meeting implements Serializable {
 
     public void setMomList(List<Mom> momList) {
         this.momList = momList;
+    }
+
+    @XmlTransient
+    public List<Employeemeeting> getEmployeemeetingList() {
+        return employeemeetingList;
+    }
+
+    public void setEmployeemeetingList(List<Employeemeeting> employeemeetingList) {
+        this.employeemeetingList = employeemeetingList;
+    }
+
+    @XmlTransient
+    public List<Customermeeting> getCustomermeetingList() {
+        return customermeetingList;
+    }
+
+    public void setCustomermeetingList(List<Customermeeting> customermeetingList) {
+        this.customermeetingList = customermeetingList;
     }
 
     @Override

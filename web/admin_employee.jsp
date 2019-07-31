@@ -36,8 +36,8 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>ID</th>
-                                        <th>Name</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
                                         <th>Role</th>
                                         <th>Phone</th>
                                         <th>Email</th>
@@ -53,7 +53,7 @@
                                         <td></td>
                                         <td><%=emp.getId()%></td>
                                         <td><%=emp.getName()%></td>
-                                        <td><%=emp.getRole().getName()%></td>
+                                        <td><%=emp.getLastname()%></td>
                                         <td><%=emp.getPhone()%></td>
                                         <td><%=emp.getEmail()%></td>
                                         <td><%=emp.getPassword()%></td>
@@ -80,12 +80,12 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form action="EmployeeServlet" method="POST">
-                        <label><b>ID</b></label>
-                        <input class="form-control" type="text" name="id" value="<%=(employee != null) ? employee.getId() : ""%>"/>
-                        <br>
-                        <label><b>Name</b></label>
+                    <form action="insertEmployeeServlet" method="POST">
+                        <label><b>First Name</b></label>
                         <input class="form-control" type="text" name="name" value="<%=(employee != null) ? employee.getName() : ""%>" />
+                        <br>
+                        <label><b>Last Name</b></label>
+                        <input class="form-control" type="text" name="lastname" value="<%=(employee != null) ? employee.getLastname() : ""%>" />
                         <br>
                         <label><b>Role</b></label>
                         <div>
@@ -134,8 +134,11 @@
                         <label><b>ID</b></label>
                         <input class="form-control" type="text" name="id" value="<%=emp1.getId()%>" readonly/>
                         <br>
-                        <label><b>Name</b></label>
+                        <label><b>First Name</b></label>
                         <input class="form-control" type="text" name="name" value="<%=emp1.getName()%>" />
+                        <br>
+                        <label><b>Last Name</b></label>
+                        <input class="form-control" type="text" name="lastname" value="<%=emp1.getLastname()%>" />
                         <br>
                         <label><b>Role</b></label>
                         <div>
@@ -143,9 +146,10 @@
                                 <option value="">None</option>
                                 <%  if(session.getAttribute("listRole") !=  null){
                                         for (Role r : role) {%>
-                                        <option value="<%=r.getId()%>"<%=(emp1!=null)?(Integer.parseInt(r.getId().toString())==
-                                                Integer.parseInt(emp1.getRole().getId().toString()))?
-                                                "selected":"":""%>><%=r.getName()%></option>
+                                            <option value="<%=r.getId()%>"<%=(emp1!=null)?(Integer.parseInt(r.getId().toString())==
+                                                    Integer.parseInt(emp1.getRole().getId().toString()))?
+                                                    "selected":"":""%>><%=r.getName()%>
+                                            </option>
                                         <%}
                                     }
                                 %>

@@ -16,6 +16,7 @@ public interface ICustomerController {
     public List<Customer> getAll();
     public Customer getById(String id);
     public List<Customer> getByName(String name);
-    public String insertUpdate (String id, String name, String pic, String address, String phone, String email);
+    public String insert(String name, String pic, String address, String province, String district, String subdistrict, String urbanvillage, String phone, String email);
+    public String Update(String id, String name, String pic, String address, String province, String district, String subdistrict, String urbanvillage, String phone, String email);
     public String delete(String id);
 }

@@ -90,8 +90,6 @@ public class GenericDAO<T> implements IGenericDAO<T>{
         return listData;
     }
 
-
-
     @Override
     public boolean delete(T model) {
         boolean result = false;
@@ -127,13 +125,31 @@ public class GenericDAO<T> implements IGenericDAO<T>{
         return simpString;
     }
 
-
-    public boolean insertUpdate(T model) {
+    public boolean insert(T model) {
         boolean result = false;
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.saveOrUpdate(model);
+            session.save(model);
+            transaction.commit();
+            result = true;
+        } catch (Exception e){
+            if(transaction != null)
+                transaction.rollback();
+            e.printStackTrace();
+        } finally{
+           session.close();
+        }
+        return result;
+    }
+
+    @Override
+    public boolean update(T model) {
+        boolean result = false;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            session.update(model);
             transaction.commit();
             result = true;
         } catch (Exception e){

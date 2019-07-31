@@ -16,6 +16,6 @@ public interface IMeetingController {
     public List<Meeting> getAll();
     public Meeting getById(String id);
     public List<Meeting> getByName(String name);
-    public String insertUpdate (String id, String name, String project, String dates, String time, String chairedby, String type, String customer);
+    public String insertUpdate (String id, String name, String project, String dates, String time, String type, String customer, String manager, String pic);
     public String delete(String id);
 }

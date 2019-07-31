@@ -11,6 +11,10 @@ import idaos.IGenericDAO;
 import java.math.BigDecimal;
 import java.util.List;
 import models.Customer;
+import models.District;
+import models.Province;
+import models.Subdistrict;
+import models.Urbanvillage;
 import org.hibernate.SessionFactory;
 import tools.HibernateUtil;
 
@@ -43,10 +47,14 @@ public class CustomerController implements ICustomerController{
     }
 
     @Override
-    public String insertUpdate(String id, String name, String pic, String address, String phone, String email) {
+    public String insert(String name, String pic, String address, String province, String district, String subdistrict, String urbanvillage, String phone, String email) {
         String result = "";
-        Customer customer = new Customer (new BigDecimal(id), name, pic, address, phone, email);
-        if(iGenericDAO.insertUpdate(customer)){
+        Customer customer = new Customer(name, pic, address, phone, email, 
+                new District(new BigDecimal(district)), 
+                new Province(new BigDecimal(province)), 
+                new Subdistrict(new BigDecimal(subdistrict)),
+                new Urbanvillage(new BigDecimal(urbanvillage)));
+        if(iGenericDAO.insert(customer)){
             result = "Data berhasil disimpan";
         }else{
             result = "Maaf Data gagal disimpan";
@@ -54,6 +62,22 @@ public class CustomerController implements ICustomerController{
         return result;
     }
 
+    @Override
+    public String Update(String id, String name, String pic, String address, String province, String district, String subdistrict, String urbanvillage, String phone, String email) {
+        String result = "";
+        Customer customer = new Customer(new BigDecimal(id), name, pic, address, phone, email, 
+                new District(new BigDecimal(district)), 
+                new Province(new BigDecimal(province)), 
+                new Subdistrict(new BigDecimal(subdistrict)),
+                new Urbanvillage(new BigDecimal(urbanvillage)));
+        if(iGenericDAO.insert(customer)){
+            result = "Data berhasil disimpan";
+        }else{
+            result = "Maaf Data gagal disimpan";
+        }
+        return result;
+    }
+    
     @Override
     public String delete(String id) {
         String result = "";
@@ -65,5 +89,5 @@ public class CustomerController implements ICustomerController{
         }
         return result;
     }
-    
+
 }

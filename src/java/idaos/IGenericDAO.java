@@ -15,8 +15,7 @@ public interface IGenericDAO<T> {
     public List<T> getAll();
     public T getById(Object key);
     public List<T> getByName(Object key);
-    public boolean insertUpdate(T model);
+    public boolean insert(T model);
+    public boolean update(T model);
     public boolean delete(T model);
-
-
 }

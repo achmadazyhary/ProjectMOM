@@ -13,8 +13,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -27,13 +25,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author HARRY-PC
  */
 @Entity
-@Table(name = "MOM")
+@Table(name = "PROVINCE")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Mom.findAll", query = "SELECT m FROM Mom m")
-    , @NamedQuery(name = "Mom.findById", query = "SELECT m FROM Mom m WHERE m.id = :id")
-    , @NamedQuery(name = "Mom.findByMeetingdesc", query = "SELECT m FROM Mom m WHERE m.meetingdesc = :meetingdesc")})
-public class Mom implements Serializable {
+    @NamedQuery(name = "Province.findAll", query = "SELECT p FROM Province p")
+    , @NamedQuery(name = "Province.findById", query = "SELECT p FROM Province p WHERE p.id = :id")
+    , @NamedQuery(name = "Province.findByName", query = "SELECT p FROM Province p WHERE p.name = :name")})
+public class Province implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -41,21 +39,17 @@ public class Mom implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private BigDecimal id;
-    @Column(name = "MEETINGDESC")
-    private String meetingdesc;
-    @JoinColumn(name = "MEETING", referencedColumnName = "ID")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Meeting meeting;
-    @JoinColumn(name = "STATUS", referencedColumnName = "ID")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Status status;
-    @OneToMany(mappedBy = "mom", fetch = FetchType.LAZY)
-    private List<Followup> followupList;
+    @Column(name = "NAME")
+    private String name;
+    @OneToMany(mappedBy = "province", fetch = FetchType.LAZY)
+    private List<District> districtList;
+    @OneToMany(mappedBy = "province", fetch = FetchType.LAZY)
+    private List<Customer> customerList;
 
-    public Mom() {
+    public Province() {
     }
 
-    public Mom(BigDecimal id) {
+    public Province(BigDecimal id) {
         this.id = id;
     }
 
@@ -67,37 +61,30 @@ public class Mom implements Serializable {
         this.id = id;
     }
 
-    public String getMeetingdesc() {
-        return meetingdesc;
+    public String getName() {
+        return name;
     }
 
-    public void setMeetingdesc(String meetingdesc) {
-        this.meetingdesc = meetingdesc;
-    }
-
-    public Meeting getMeeting() {
-        return meeting;
-    }
-
-    public void setMeeting(Meeting meeting) {
-        this.meeting = meeting;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @XmlTransient
-    public List<Followup> getFollowupList() {
-        return followupList;
+    public List<District> getDistrictList() {
+        return districtList;
     }
 
-    public void setFollowupList(List<Followup> followupList) {
-        this.followupList = followupList;
+    public void setDistrictList(List<District> districtList) {
+        this.districtList = districtList;
+    }
+
+    @XmlTransient
+    public List<Customer> getCustomerList() {
+        return customerList;
+    }
+
+    public void setCustomerList(List<Customer> customerList) {
+        this.customerList = customerList;
     }
 
     @Override
@@ -110,10 +97,10 @@ public class Mom implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Mom)) {
+        if (!(object instanceof Province)) {
             return false;
         }
-        Mom other = (Mom) object;
+        Province other = (Province) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -122,7 +109,7 @@ public class Mom implements Serializable {
 
     @Override
     public String toString() {
-        return "models.Mom[ id=" + id + " ]";
+        return "models.Province[ id=" + id + " ]";
     }
     
 }

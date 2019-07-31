@@ -89,11 +89,12 @@ public class admin_employee_servlet extends HttpServlet {
         
         String id = request.getParameter("id");
         String name = request.getParameter("name");
+        String lastname = request.getParameter("lastname");
         String role = request.getParameter("role");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        iec.insertUpdate(id, name, role, phone, email, password);
+        iec.update(id, name, lastname, role, phone, email, password);
         processRequest(request, response);
     }
 

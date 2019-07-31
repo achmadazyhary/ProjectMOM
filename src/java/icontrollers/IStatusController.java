@@ -16,6 +16,7 @@ public interface IStatusController {
     public List<Status> getAll();
     public Status getById(String id);
     public List<Status> getByName(String name);
-    public String insertUpdate (String id, String name);
+    public String insert(String name);
+    public String update(String id, String name);
     public String delete(String id);
 }

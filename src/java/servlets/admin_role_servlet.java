@@ -28,8 +28,8 @@ import tools.HibernateUtil;
 @WebServlet(name = "admin_role_servlet", urlPatterns = {"/RoleServlet"})
 public class admin_role_servlet extends HttpServlet {
 
-        //IGenericDAO<Role> roleDAO = new GenericDAO(Role.class, HibernateUtil.getSessionFactory());
-        IRoleController irc = new RoleController();
+    IGenericDAO<Role> igdao = new GenericDAO<>(Role.class, HibernateUtil.getSessionFactory());
+    IRoleController irc = new RoleController();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,7 +45,6 @@ public class admin_role_servlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             request.getSession().setAttribute("listRole", irc.getAll());
-            
             response.sendRedirect("admin_role.jsp");
         }
     }
@@ -63,12 +62,15 @@ public class admin_role_servlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String id = request.getParameter("id")+"";
+        String name = request.getParameter("name")+"";
         String action = request.getParameter("action")+"";
         if(action.equals("delete")){
             irc.delete(id);
         }else if(action.equals("update")){
             request.getSession().setAttribute("role", irc.getById(id));
+            irc.Update(id, name);
         }
+        
         processRequest(request, response);
     }
 
@@ -85,7 +87,7 @@ public class admin_role_servlet extends HttpServlet {
             throws ServletException, IOException {
         String id = request.getParameter("id");
         String name = request.getParameter("name");
-        irc.insertUpdate(id, name);
+        irc.Update(id, name);
         processRequest(request, response);
     }
 

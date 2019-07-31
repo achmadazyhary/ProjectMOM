@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Customer;
+import models.Employee;
 import models.Meeting;
 import org.hibernate.SessionFactory;
 import tools.HibernateUtil;
@@ -50,9 +51,8 @@ public class MeetingController implements IMeetingController{
     }
 
     @Override
-    public String insertUpdate(String id, String name, String project, String dates, String time, String chairedby, String type, String customer) {
+    public String insertUpdate(String id, String name, String project, String dates, String time, String type, String customer, String manager, String pic) {
         String result = "";
-        Customer newCustomer = new Customer(customer);
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date newDate = null;
         try {
@@ -60,7 +60,7 @@ public class MeetingController implements IMeetingController{
         } catch (ParseException ex) {
             Logger.getLogger(FollowupController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Meeting meeting = new Meeting(new BigDecimal(id), name, project, newDate, time, chairedby, type, newCustomer);
+        Meeting meeting = new Meeting(new BigDecimal(id), name, project, newDate, time, type, new Customer(new BigDecimal(customer)), new Employee(new BigDecimal(pic)), new Employee(new BigDecimal(manager)));
         if(iGenericDAO.insertUpdate(meeting)){
             result = "Data berhasil disimpan";
         }else{

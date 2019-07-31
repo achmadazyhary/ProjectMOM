@@ -68,10 +68,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form action="StatusServlet" method="POST">
-                        <label><b>ID</b></label>
-                        <input class="form-control" type="text" name="id" value="<%=(status != null) ? status.getId() : ""%>"/>
-                        <br>
+                    <form action="insertStatusServlet" method="POST">
                         <label><b>Name</b></label>
                         <input class="form-control" type="text" name="name" value="<%=(status != null) ? status.getName() : ""%>" />
                         <br>

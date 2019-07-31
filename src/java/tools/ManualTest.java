@@ -6,8 +6,10 @@
 package tools;
 
 import controllers.EmployeeController;
+import controllers.RoleController;
 import daos.GenericDAO;
 import icontrollers.IEmployeeController;
+import icontrollers.IRoleController;
 import idaos.IGenericDAO;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -84,17 +86,13 @@ public class ManualTest {
 //        System.out.println(countryDAO.delete(new Country("ID")));
             
             SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-
-//        IGenericDAO genericDAO = new GenericDAO(UserManagement.class, sessionFactory);
-//        UserManagement um = new UserManagement("bella", "nurha");
-//        System.out.println(genericDAO.insertUpdate(um));
-
-//        IGenericDAO<Role> igdao = new GenericDAO(Role.class, sessionFactory);
-//        BigDecimal id = new BigDecimal(1);
-//        System.out.println(igdao.insertUpdate(new Role(id, "Administrator")));
-//        System.out.println(igdao.delete(new Role(id)));
-            IEmployeeController iec = new EmployeeController();
-            System.out.println(iec.insertUpdate("1", "dnjkn", "1", "081234567890", "wiknfpw@mail.com", "12345"));
+            IGenericDAO<Role> igdao = new GenericDAO<>(Role.class, sessionFactory);
+//            IRoleController irc = new RoleController();
+            for (Role role : igdao.getAll()) {
+                System.out.println(role.getId());
+                System.out.println(role.getName());
+            }
+//            System.out.println(igdao.save(new Role("AdminHary"), true));
         }
         
     } 

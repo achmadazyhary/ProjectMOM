@@ -27,13 +27,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author HARRY-PC
  */
 @Entity
-@Table(name = "MOM")
+@Table(name = "SUBDISTRICT")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Mom.findAll", query = "SELECT m FROM Mom m")
-    , @NamedQuery(name = "Mom.findById", query = "SELECT m FROM Mom m WHERE m.id = :id")
-    , @NamedQuery(name = "Mom.findByMeetingdesc", query = "SELECT m FROM Mom m WHERE m.meetingdesc = :meetingdesc")})
-public class Mom implements Serializable {
+    @NamedQuery(name = "Subdistrict.findAll", query = "SELECT s FROM Subdistrict s")
+    , @NamedQuery(name = "Subdistrict.findById", query = "SELECT s FROM Subdistrict s WHERE s.id = :id")
+    , @NamedQuery(name = "Subdistrict.findByName", query = "SELECT s FROM Subdistrict s WHERE s.name = :name")})
+public class Subdistrict implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -41,21 +41,20 @@ public class Mom implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private BigDecimal id;
-    @Column(name = "MEETINGDESC")
-    private String meetingdesc;
-    @JoinColumn(name = "MEETING", referencedColumnName = "ID")
+    @Column(name = "NAME")
+    private String name;
+    @JoinColumn(name = "DISTRICT", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Meeting meeting;
-    @JoinColumn(name = "STATUS", referencedColumnName = "ID")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Status status;
-    @OneToMany(mappedBy = "mom", fetch = FetchType.LAZY)
-    private List<Followup> followupList;
+    private District district;
+    @OneToMany(mappedBy = "subdistrict", fetch = FetchType.LAZY)
+    private List<Customer> customerList;
+    @OneToMany(mappedBy = "subdistrict", fetch = FetchType.LAZY)
+    private List<Urbanvillage> urbanvillageList;
 
-    public Mom() {
+    public Subdistrict() {
     }
 
-    public Mom(BigDecimal id) {
+    public Subdistrict(BigDecimal id) {
         this.id = id;
     }
 
@@ -67,37 +66,38 @@ public class Mom implements Serializable {
         this.id = id;
     }
 
-    public String getMeetingdesc() {
-        return meetingdesc;
+    public String getName() {
+        return name;
     }
 
-    public void setMeetingdesc(String meetingdesc) {
-        this.meetingdesc = meetingdesc;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Meeting getMeeting() {
-        return meeting;
+    public District getDistrict() {
+        return district;
     }
 
-    public void setMeeting(Meeting meeting) {
-        this.meeting = meeting;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setDistrict(District district) {
+        this.district = district;
     }
 
     @XmlTransient
-    public List<Followup> getFollowupList() {
-        return followupList;
+    public List<Customer> getCustomerList() {
+        return customerList;
     }
 
-    public void setFollowupList(List<Followup> followupList) {
-        this.followupList = followupList;
+    public void setCustomerList(List<Customer> customerList) {
+        this.customerList = customerList;
+    }
+
+    @XmlTransient
+    public List<Urbanvillage> getUrbanvillageList() {
+        return urbanvillageList;
+    }
+
+    public void setUrbanvillageList(List<Urbanvillage> urbanvillageList) {
+        this.urbanvillageList = urbanvillageList;
     }
 
     @Override
@@ -110,10 +110,10 @@ public class Mom implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Mom)) {
+        if (!(object instanceof Subdistrict)) {
             return false;
         }
-        Mom other = (Mom) object;
+        Subdistrict other = (Subdistrict) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -122,7 +122,7 @@ public class Mom implements Serializable {
 
     @Override
     public String toString() {
-        return "models.Mom[ id=" + id + " ]";
+        return "models.Subdistrict[ id=" + id + " ]";
     }
     
 }
